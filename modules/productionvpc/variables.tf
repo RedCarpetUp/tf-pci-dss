@@ -14,7 +14,7 @@ variable "environment" {
   description = "Name of the environment for the deployment, e.g. Integration, PreProduction, Production, QA, Staging, Test."
 }
 
-variable "cidr_block" {
+variable "productioncidr" {
   description = "Production VPC CIDR block."
 }
 
