@@ -34,3 +34,14 @@ ManagementPrivateSubnetBCIDR = "10.10.30.0/24"
 ec2keypairbastion            = "ans"
 bastioninstancetype          = "m4.large"
 map_public_ip_on_launch      = true
+
+###############################################################################
+# IAM Password Policy
+###############################################################################
+minimum_password_length      = 7
+require_lowercase_characters = true
+require_numbers              = true
+require_uppercase_characters = true
+require_symbols              = true
+max_password_age             = 90
+password_reuse_prevention    = 4
