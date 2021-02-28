@@ -34,8 +34,10 @@ locals {
 data "aws_availability_zones" "available" {
 }
 
+data "aws_caller_identity" "current" {}
+
 ###############################################################################
-# VPCs
+# Modules
 ###############################################################################
 module "productionvpc" {
   source = "../modules/productionvpc"
@@ -93,4 +95,12 @@ module "iam_password" {
   require_symbols              = var.require_symbols
   max_password_age             = var.max_password_age
   password_reuse_prevention    = var.password_reuse_prevention
+}
+
+module "logging" {
+  source = "../modules/centralized-logging"
+
+  BucketName = "test-antonio-cuenco-test"
+  account_id = data.aws_caller_identity.current.account_id
+
 }

@@ -131,3 +131,11 @@ output "ReadOnlyAdminGroup" {
   description = "The ID of the ReadOnlyAdmin Group."
   value       = module.iam.ReadOnlyAdminGroup
 }
+
+###############################################################################
+# Centralized Logging Output
+###############################################################################
+output "s3cloudtrailbuckets" {
+  description = "The ID of the S3 CloudTrail bucket."
+  value       = module.logging.s3cloudtrailbuckets
+}
