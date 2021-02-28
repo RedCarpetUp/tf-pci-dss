@@ -35,7 +35,7 @@ data "aws_availability_zones" "available" {
 }
 
 ###############################################################################
-# VPC
+# VPCs
 ###############################################################################
 module "productionvpc" {
   source = "../modules/productionvpc"
@@ -43,7 +43,7 @@ module "productionvpc" {
   region            = var.region
   vpc_name          = var.vpc_name
   environment       = var.environment
-  cidr_block        = var.cidr_block
+  productioncidr    = var.productioncidr
   bastionsshcidr    = var.bastionsshcidr
   managementcidr    = var.managementcidr
   DMZSubnetACIDR    = var.DMZSubnetACIDR
@@ -52,4 +52,28 @@ module "productionvpc" {
   AppPrivateSubnetB = var.AppPrivateSubnetB
   DBPrivateSubnetA  = var.DBPrivateSubnetA
   DBPrivateSubnetB  = var.DBPrivateSubnetB
+}
+
+module "managementvpc" {
+  source = "../modules/managementvpc"
+
+  region                       = var.region
+  managementvpcname            = var.managementvpcname
+  environment                  = var.environment
+  managementcidr               = var.managementcidr
+  bastionsshcidr               = var.bastionsshcidr
+  ManagementDMZSubnetACIDR     = var.ManagementDMZSubnetACIDR
+  ManagementDMZSubnetBCIDR     = var.ManagementDMZSubnetBCIDR
+  ManagementPrivateSubnetACIDR = var.ManagementPrivateSubnetACIDR
+  ManagementPrivateSubnetBCIDR = var.ManagementPrivateSubnetBCIDR
+  map_public_ip_on_launch      = var.map_public_ip_on_launch
+
+  ec2keypairbastion   = var.ec2keypairbastion
+  bastioninstancetype = var.bastioninstancetype
+
+  ProductionVPC          = module.productionvpc.vpc_id
+  ProductionCIDR         = var.productioncidr
+  RouteTableProdPrivate  = module.productionvpc.route_table_prod_private_a
+  RouteTableProdPrivateB = module.productionvpc.route_table_prod_private_b
+  RouteTableProdPublic   = module.productionvpc.route_table_prod_public
 }

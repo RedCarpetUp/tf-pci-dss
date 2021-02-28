@@ -60,3 +60,46 @@ output "route_table_prod_private_b" {
   description = "The ID of the Private Routing Table B."
   value       = module.productionvpc.route_table_prod_private_b
 }
+
+###############################################################################
+# Management VPC Output
+###############################################################################
+output "VPCManagement" {
+  description = "The ID of the VPC."
+  value       = module.managementvpc.VPCManagement
+}
+
+output "BastionInstanceIP" {
+  description = "Public IP of the bastion host."
+  value       = module.managementvpc.BastionInstanceIP
+}
+
+output "ManagementDMZSubnetA" {
+  description = "The ID of the DMZ Subnet A."
+  value       = module.managementvpc.ManagementDMZSubnetA
+}
+
+output "ManagementDMZSubnetB" {
+  description = "The ID of the DMZ Subnet B."
+  value       = module.managementvpc.ManagementDMZSubnetB
+}
+
+output "ManagementPrivateSubnetA" {
+  description = "The ID of the Private Subnet A."
+  value       = module.managementvpc.ManagementPrivateSubnetA
+}
+
+output "ManagementPrivateSubnetB" {
+  description = "The ID of the Private Subnet B."
+  value       = module.managementvpc.ManagementPrivateSubnetB
+}
+
+output "RouteTableMgmtPrivate" {
+  description = "The ID of the Private Routing Table."
+  value       = module.managementvpc.RouteTableMgmtPrivate
+}
+
+output "RouteTableMgmtDMZ" {
+  description = "The ID of the DMZ Routing Table."
+  value       = module.managementvpc.RouteTableMgmtDMZ
+}
