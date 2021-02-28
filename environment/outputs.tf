@@ -103,3 +103,31 @@ output "RouteTableMgmtDMZ" {
   description = "The ID of the DMZ Routing Table."
   value       = module.managementvpc.RouteTableMgmtDMZ
 }
+
+###############################################################################
+# IAM Output
+###############################################################################
+output "SysAdmin" {
+  description = "The ID of the SysAdmin Group."
+  value       = module.iam.SysAdmin
+}
+
+output "IAMAdminGroup" {
+  description = "The ID of the IAMAdmin Group."
+  value       = module.iam.IAMAdminGroup
+}
+
+output "InstanceOpsGroup" {
+  description = "The ID of the InstanceOps Group."
+  value       = module.iam.InstanceOpsGroup
+}
+
+output "ReadOnlyBillingGroup" {
+  description = "The ID of the ReadOnlyBilling Group."
+  value       = module.iam.ReadOnlyBillingGroup
+}
+
+output "ReadOnlyAdminGroup" {
+  description = "The ID of the ReadOnlyAdmin Group."
+  value       = module.iam.ReadOnlyAdminGroup
+}

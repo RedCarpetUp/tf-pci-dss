@@ -77,3 +77,8 @@ module "managementvpc" {
   RouteTableProdPrivateB = module.productionvpc.route_table_prod_private_b
   RouteTableProdPublic   = module.productionvpc.route_table_prod_public
 }
+
+module "iam" {
+  source = "../modules/iam"
+
+}
