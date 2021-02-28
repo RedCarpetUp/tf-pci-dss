@@ -3,7 +3,6 @@
 ###############################################################################
 variable "region" {
   description = "Default Region."
-  default     = "ap-southeast-2"
 }
 
 variable "environment" {
