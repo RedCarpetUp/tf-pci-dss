@@ -11,8 +11,8 @@ terraform {
   }
   backend "s3" {
     bucket  = "130541009828-build-state-bucket-tf-sandys" ### PLEASE UPDATE BACKEND BUCKET NAME
-    key     = "terraform.environment.tfstate"             ### PLEASE UPDATE REGION
-    region  = "ap-southeast-2"
+    key     = "terraform.environment.tfstate"
+    region  = "ap-southeast-2" ### PLEASE UPDATE REGION
     encrypt = "true"
   }
 }

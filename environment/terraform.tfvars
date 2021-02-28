@@ -1,13 +1,13 @@
 ###############################################################################
 # Environment
 ###############################################################################
-aws_account_id = "130541009828"
-region         = "ap-southeast-2"
+aws_account_id = "130541009828"   ### PLEASE UPDATE THE AWS ACCOUNT NUMBER
+region         = "ap-southeast-2" ### PLEASE UPDATE THE AWS REGION
 
 ###############################################################################
 # VPC Common
 ###############################################################################
-environment    = "Production"
+environment    = "Production" ### PLEASE UPDATE THE ENVIRONMENT
 productioncidr = "10.100.0.0/16"
 bastionsshcidr = "0.0.0.0/0"
 managementcidr = "10.10.0.0/16"
@@ -31,7 +31,7 @@ ManagementDMZSubnetACIDR     = "10.10.1.0/24"
 ManagementDMZSubnetBCIDR     = "10.10.2.0/24"
 ManagementPrivateSubnetACIDR = "10.10.20.0/24"
 ManagementPrivateSubnetBCIDR = "10.10.30.0/24"
-ec2keypairbastion            = "ans"
+ec2keypairbastion            = "ans" ### PLEASE UPDATE THE EC2 KEYPAIR
 bastioninstancetype          = "m4.large"
 map_public_ip_on_launch      = true
 
