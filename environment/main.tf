@@ -104,9 +104,9 @@ module "productionvpc" {
 #   account_id = data.aws_caller_identity.current.account_id
 #
 # }
-
-
-
+#
+#
+#
 module "database" {
   source     = "../modules/database"
   depends_on = [module.productionvpc]
@@ -117,4 +117,21 @@ module "database" {
   DB_subnetA     = module.productionvpc.db_subnet_a
   DB_subnetB     = module.productionvpc.db_subnet_b
   region         = var.region
+}
+
+
+module "application" {
+  source     = "../modules/application"
+  depends_on = [module.productionvpc]
+
+  environment       = var.environment
+  ProductionVPC     = module.productionvpc.vpc_id
+  ProductionCIDR    = var.productioncidr
+  region            = var.region
+  DMZSubnetA        = module.productionvpc.dmz_subnet_a
+  DMZSubnetB        = module.productionvpc.dmz_subnet_b
+  AppPrivateSubnetA = module.productionvpc.app_subnet_a
+  AppPrivateSubnetB = module.productionvpc.app_subnet_b
+  rds_sg_id         = module.database.rds_sg_id
+  managementcidr    = var.managementcidr
 }

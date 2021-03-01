@@ -139,3 +139,10 @@
 #   description = "The ID of the S3 CloudTrail bucket."
 #   value       = module.logging.s3cloudtrailbuckets
 # }
+###############################################################################
+# RDS Output
+###############################################################################
+output "rds_sg_id" {
+  description = "The ID of the S3 CloudTrail bucket."
+  value       = module.database.rds_sg_id
+}
