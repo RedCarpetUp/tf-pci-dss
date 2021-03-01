@@ -1,7 +1,7 @@
-# ###############################################################################
-# # Database Output
-# ###############################################################################
-# output "s3cloudtrailbuckets" {
-#   description = "The ID of the S3 CloudTrail bucket."
-#   value       = aws_s3_bucket.s3cloudtrailbuckets.id
-# }
+###############################################################################
+# Database Output
+###############################################################################
+output "rds_sg_id" {
+  description = "The ID of the S3 CloudTrail bucket."
+  value       = aws_security_group.rds_sg.id
+}

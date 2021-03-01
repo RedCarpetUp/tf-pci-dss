@@ -11,16 +11,9 @@ data "aws_availability_zones" "available" {
 ###############################################################################
 # Security Groups
 ###############################################################################
-resource "aws_security_group" "SecurityGroupBastion" {
+resource "aws_security_group" "rds_sg" {
   description = "Port 3306 database for access"
   vpc_id      = var.ProductionVPC
-
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = [var.ProductionCIDR]
-  }
 
   egress {
     from_port   = 1
@@ -42,18 +35,18 @@ resource "aws_security_group" "SecurityGroupBastion" {
 resource "aws_rds_cluster_instance" "cluster_instances" {
   count              = 2
   identifier         = "aurora-cluster-demo-${count.index}"
-  cluster_identifier = aws_rds_cluster.default.id
+  cluster_identifier = aws_rds_cluster.aurora.id
   instance_class     = "db.r4.large"
-  engine             = aws_rds_cluster.default.engine
-  engine_version     = aws_rds_cluster.default.engine_version
+  engine             = aws_rds_cluster.aurora.engine
+  engine_version     = aws_rds_cluster.aurora.engine_version
 }
 
-resource "aws_rds_cluster" "default" {
+resource "aws_rds_cluster" "aurora" {
   cluster_identifier     = "aurora-cluster-demo"
   database_name          = "mydb"
   master_username        = "foo"
   master_password        = random_password.master_password.result
-  vpc_security_group_ids = [aws_security_group.SecurityGroupBastion.id]
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
   availability_zones     = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1]]
   storage_encrypted      = true
   skip_final_snapshot    = true
