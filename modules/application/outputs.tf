@@ -1,7 +1,7 @@
-# ###############################################################################
-# # Database Output
-# ###############################################################################
-# output "s3cloudtrailbuckets" {
-#   description = "The ID of the S3 CloudTrail bucket."
-#   value       = aws_s3_bucket.s3cloudtrailbuckets.id
-# }
+###############################################################################
+# Database Output
+###############################################################################
+output "loadbalancerdns" {
+  description = "The DNS name of the load balancer."
+  value       = aws_lb.alb.dns_name
+}

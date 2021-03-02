@@ -115,9 +115,14 @@ resource "aws_security_group_rule" "rds_sg_ingress_tcp_5432_web_ec2" {
 ###############################################################################
 # S3
 ###############################################################################
+resource "random_string" "random" {
+  length  = 6
+  special = false
+}
+
 resource "aws_s3_bucket" "log_bucket" {
   acl           = "private"
-  bucket        = "elbaccesslogs-antonio"
+  bucket        = "elbaccesslogs-${random_string.random.result}"
   force_destroy = true
 
   server_side_encryption_configuration {
@@ -239,31 +244,19 @@ resource "aws_lb_listener" "https" {
   }
 }
 
-
-
 ###############################################################################
 # AutoScaling Group
 ###############################################################################
-data "aws_ami" "ami" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["amzn-ami-hvm-*-x86_64-gp2"]
-  }
-}
-
 resource "aws_launch_template" "launch_template" {
-  image_id               = data.aws_ami.ami.id
-  instance_type          = "t3.nano"
+  image_id               = var.image_id
+  instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.web_ec2_sg.id]
 }
 
 resource "aws_autoscaling_group" "asg" {
-  desired_capacity    = 2
-  max_size            = 3
-  min_size            = 2
+  desired_capacity    = var.desired_capacity
+  max_size            = var.max_size
+  min_size            = var.min_size
   vpc_zone_identifier = [var.AppPrivateSubnetA, var.AppPrivateSubnetB]
   target_group_arns   = [aws_lb_target_group.main.arn]
 
