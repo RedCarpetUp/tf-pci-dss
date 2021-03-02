@@ -45,7 +45,7 @@ resource "aws_rds_cluster" "aurora" {
   cluster_identifier     = var.rds_name
   database_name          = var.database_name
   master_username        = var.master_username
-  master_password        = random_password.master_password.result
+  master_password        = random_string.master_password.result
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   availability_zones     = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1]]
   storage_encrypted      = true
@@ -71,14 +71,17 @@ resource "aws_db_subnet_group" "aurora_subnet_group" {
 
 }
 
-resource "random_password" "master_password" {
+resource "random_string" "master_password" {
   length  = 10
-  special = true
+  special = false
+  lower   = true
+  upper   = true
+  number  = true
 }
 
 resource "aws_ssm_parameter" "rds_pwd_ssm" {
 
   name  = "RDSPassword"
   type  = "SecureString"
-  value = random_password.master_password.result
+  value = random_string.master_password.result
 }
