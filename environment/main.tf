@@ -31,10 +31,21 @@ locals {
   }
 }
 
-
 data "aws_availability_zones" "available" {}
+
 data "aws_region" "current" {}
+
 data "aws_caller_identity" "current" {}
+
+data "aws_ami" "ami" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn-ami-hvm-*-x86_64-gp2"]
+  }
+}
 
 ###############################################################################
 # Modules
@@ -69,9 +80,8 @@ module "managementvpc" {
   ManagementPrivateSubnetACIDR = var.ManagementPrivateSubnetACIDR
   ManagementPrivateSubnetBCIDR = var.ManagementPrivateSubnetBCIDR
   map_public_ip_on_launch      = var.map_public_ip_on_launch
-
-  ec2keypairbastion   = var.ec2keypairbastion
-  bastioninstancetype = var.bastioninstancetype
+  ec2keypairbastion            = var.ec2keypairbastion
+  bastioninstancetype          = var.bastioninstancetype
 
   ProductionVPC          = module.productionvpc.vpc_id
   ProductionCIDR         = var.productioncidr
@@ -100,29 +110,34 @@ module "iam_password" {
 module "logging" {
   source = "../modules/centralized-logging"
 
-  BucketName = "test-antonio-cuenco-test"
-  account_id = data.aws_caller_identity.current.account_id
-  region     = data.aws_region.current.name
+  BucketName     = var.BucketName
+  account_id     = data.aws_caller_identity.current.account_id
+  region         = data.aws_region.current.name
+  CloudTrailName = var.CloudTrailName
 }
-
-
 
 module "database" {
-  source     = "../modules/database"
-  depends_on = [module.productionvpc]
+  source = "../modules/database"
 
-  environment    = var.environment
-  ProductionVPC  = module.productionvpc.vpc_id
-  ProductionCIDR = var.productioncidr
-  DB_subnetA     = module.productionvpc.db_subnet_a
-  DB_subnetB     = module.productionvpc.db_subnet_b
-  region         = var.region
+  database_name   = var.database_name
+  master_username = var.master_username
+  engine          = var.engine
+  engine_version  = var.engine_version
+  rds_name        = var.rds_name
+  rds_count       = var.rds_count
+  instance_class  = var.instance_class
+  environment     = var.environment
+  ProductionVPC   = module.productionvpc.vpc_id
+  ProductionCIDR  = var.productioncidr
+  DB_subnetA      = module.productionvpc.db_subnet_a
+  DB_subnetB      = module.productionvpc.db_subnet_b
+  region          = var.region
+
+  depends_on = [module.productionvpc]
 }
 
-
 module "application" {
-  source     = "../modules/application"
-  depends_on = [module.productionvpc]
+  source = "../modules/application"
 
   environment       = var.environment
   ProductionVPC     = module.productionvpc.vpc_id
@@ -134,4 +149,11 @@ module "application" {
   AppPrivateSubnetB = module.productionvpc.app_subnet_b
   rds_sg_id         = module.database.rds_sg_id
   managementcidr    = var.managementcidr
+  instance_type     = var.instance_type
+  desired_capacity  = var.desired_capacity
+  max_size          = var.max_size
+  min_size          = var.min_size
+  image_id          = data.aws_ami.ami.id
+
+  depends_on = [module.productionvpc, module.database]
 }

@@ -30,7 +30,7 @@ variable "managementcidr" {
 # Variables - Production VPC
 ###############################################################################
 variable "vpc_name" {
-  description = "Production VPC Name"
+  description = "Production VPC Name."
 }
 
 variable "DMZSubnetACIDR" {
@@ -123,4 +123,65 @@ variable "max_password_age" {
 
 variable "password_reuse_prevention" {
   description = "Number of previous passwords to remember. (1-24 passwords)"
+}
+
+###############################################################################
+# Logging
+###############################################################################
+variable "BucketName" {
+  description = "The name of a new S3 bucket for logging CloudTrail events. The name must be a globally unique value and must be in lowercase letters."
+}
+
+variable "CloudTrailName" {
+  description = "The name of a new S3 bucket for logging CloudTrail events. The name must be a globally unique value and must be in lowercase letters."
+}
+
+###############################################################################
+# Variables - RDS
+###############################################################################
+variable "rds_name" {
+  description = "Name of the RDS cluster."
+}
+
+variable "rds_count" {
+  description = "Number of RDS instances to deploy."
+}
+
+variable "database_name" {
+  description = "Database Name."
+}
+
+variable "master_username" {
+  description = "Master Username for the Database."
+}
+
+variable "engine" {
+  description = "Database Engine to use."
+}
+
+variable "engine_version" {
+  description = "Database Engine version to use."
+}
+
+variable "instance_class" {
+  description = "Database Instance class to use."
+}
+
+###############################################################################
+# Variables - Application
+###############################################################################
+variable "instance_type" {
+  description = "Instance type to use in the Launch Configuration."
+}
+
+variable "desired_capacity" {
+  description = "Desired Capacity for number of instances running all the time."
+}
+
+variable "max_size" {
+  description = "Maximum number of instances running all the time."
+}
+
+variable "min_size" {
+  description = "Minimum number of instances running all the time."
 }

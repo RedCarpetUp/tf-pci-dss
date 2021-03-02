@@ -147,3 +147,11 @@ output "rds_sg_id" {
   description = "The ID of the S3 CloudTrail bucket."
   value       = module.database.rds_sg_id
 }
+
+###############################################################################
+# Application Output
+###############################################################################
+output "loadbalancerdns" {
+  description = "The DNS name of the load balancer."
+  value       = module.application.loadbalancerdns
+}

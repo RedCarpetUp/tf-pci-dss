@@ -45,3 +45,28 @@ require_uppercase_characters = true
 require_symbols              = true
 max_password_age             = 90
 password_reuse_prevention    = 4
+
+###############################################################################
+# Logging
+###############################################################################
+BucketName     = "test-antonio-cuenco-test"
+CloudTrailName = "tf-cloudtrail"
+
+###############################################################################
+# RDS
+###############################################################################
+rds_name        = "aurora-cluster-demo"
+rds_count       = 2
+database_name   = "mydb"
+master_username = "foo"
+engine          = "aurora-mysql"
+engine_version  = "5.7.mysql_aurora.2.03.2"
+instance_class  = "db.r4.large"
+
+###############################################################################
+# Application
+###############################################################################
+instance_type    = "t3.nano"
+desired_capacity = 2
+max_size         = 3
+min_size         = 2
