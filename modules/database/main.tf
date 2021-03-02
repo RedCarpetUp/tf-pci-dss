@@ -33,25 +33,25 @@ resource "aws_security_group" "rds_sg" {
 # Database
 ###############################################################################
 resource "aws_rds_cluster_instance" "cluster_instances" {
-  count              = 2
-  identifier         = "aurora-cluster-demo-${count.index}"
+  count              = var.rds_count
+  identifier         = "${var.rds_name}-${count.index}"
   cluster_identifier = aws_rds_cluster.aurora.id
-  instance_class     = "db.r4.large"
+  instance_class     = var.instance_class
   engine             = aws_rds_cluster.aurora.engine
   engine_version     = aws_rds_cluster.aurora.engine_version
 }
 
 resource "aws_rds_cluster" "aurora" {
-  cluster_identifier     = "aurora-cluster-demo"
-  database_name          = "mydb"
-  master_username        = "foo"
+  cluster_identifier     = var.rds_name
+  database_name          = var.database_name
+  master_username        = var.master_username
   master_password        = random_password.master_password.result
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   availability_zones     = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1]]
   storage_encrypted      = true
   skip_final_snapshot    = true
-  engine                 = "aurora-mysql"
-  engine_version         = "5.7.mysql_aurora.2.03.2"
+  engine                 = var.engine
+  engine_version         = var.engine_version
   db_subnet_group_name   = aws_db_subnet_group.aurora_subnet_group.name
 }
 
