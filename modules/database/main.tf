@@ -78,7 +78,7 @@ resource "random_password" "master_password" {
 
 resource "aws_ssm_parameter" "rds_pwd_ssm" {
 
-  name  = "RDS Password"
+  name  = "RDSPassword"
   type  = "SecureString"
   value = random_password.master_password.result
 }
