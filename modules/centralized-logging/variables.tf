@@ -8,3 +8,7 @@ variable "BucketName" {
 variable "account_id" {
   description = "The AWS Account ID of the user."
 }
+
+variable "region" {
+  description = "The AWS Account region."
+}

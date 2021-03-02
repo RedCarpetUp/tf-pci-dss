@@ -31,9 +31,9 @@ locals {
   }
 }
 
-data "aws_availability_zones" "available" {
-}
 
+data "aws_availability_zones" "available" {}
+data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 
 ###############################################################################
@@ -56,57 +56,57 @@ module "productionvpc" {
   DBPrivateSubnetB  = var.DBPrivateSubnetB
 }
 
-# module "managementvpc" {
-#   source = "../modules/managementvpc"
-#
-#   region                       = var.region
-#   managementvpcname            = var.managementvpcname
-#   environment                  = var.environment
-#   managementcidr               = var.managementcidr
-#   bastionsshcidr               = var.bastionsshcidr
-#   ManagementDMZSubnetACIDR     = var.ManagementDMZSubnetACIDR
-#   ManagementDMZSubnetBCIDR     = var.ManagementDMZSubnetBCIDR
-#   ManagementPrivateSubnetACIDR = var.ManagementPrivateSubnetACIDR
-#   ManagementPrivateSubnetBCIDR = var.ManagementPrivateSubnetBCIDR
-#   map_public_ip_on_launch      = var.map_public_ip_on_launch
-#
-#   ec2keypairbastion   = var.ec2keypairbastion
-#   bastioninstancetype = var.bastioninstancetype
-#
-#   ProductionVPC          = module.productionvpc.vpc_id
-#   ProductionCIDR         = var.productioncidr
-#   RouteTableProdPrivate  = module.productionvpc.route_table_prod_private_a
-#   RouteTableProdPrivateB = module.productionvpc.route_table_prod_private_b
-#   RouteTableProdPublic   = module.productionvpc.route_table_prod_public
-# }
-#
-# module "iam" {
-#   source = "../modules/iam"
-#
-# }
-#
-# module "iam_password" {
-#   source = "../modules/iam_password"
-#
-#   minimum_password_length      = var.minimum_password_length
-#   require_lowercase_characters = var.require_lowercase_characters
-#   require_numbers              = var.require_numbers
-#   require_uppercase_characters = var.require_uppercase_characters
-#   require_symbols              = var.require_symbols
-#   max_password_age             = var.max_password_age
-#   password_reuse_prevention    = var.password_reuse_prevention
-# }
-#
-# module "logging" {
-#   source = "../modules/centralized-logging"
-#
-#   BucketName = "test-antonio-cuenco-test"
-#   account_id = data.aws_caller_identity.current.account_id
-#
-# }
-#
-#
-#
+module "managementvpc" {
+  source = "../modules/managementvpc"
+
+  region                       = var.region
+  managementvpcname            = var.managementvpcname
+  environment                  = var.environment
+  managementcidr               = var.managementcidr
+  bastionsshcidr               = var.bastionsshcidr
+  ManagementDMZSubnetACIDR     = var.ManagementDMZSubnetACIDR
+  ManagementDMZSubnetBCIDR     = var.ManagementDMZSubnetBCIDR
+  ManagementPrivateSubnetACIDR = var.ManagementPrivateSubnetACIDR
+  ManagementPrivateSubnetBCIDR = var.ManagementPrivateSubnetBCIDR
+  map_public_ip_on_launch      = var.map_public_ip_on_launch
+
+  ec2keypairbastion   = var.ec2keypairbastion
+  bastioninstancetype = var.bastioninstancetype
+
+  ProductionVPC          = module.productionvpc.vpc_id
+  ProductionCIDR         = var.productioncidr
+  RouteTableProdPrivate  = module.productionvpc.route_table_prod_private_a
+  RouteTableProdPrivateB = module.productionvpc.route_table_prod_private_b
+  RouteTableProdPublic   = module.productionvpc.route_table_prod_public
+}
+
+module "iam" {
+  source = "../modules/iam"
+
+}
+
+module "iam_password" {
+  source = "../modules/iam_password"
+
+  minimum_password_length      = var.minimum_password_length
+  require_lowercase_characters = var.require_lowercase_characters
+  require_numbers              = var.require_numbers
+  require_uppercase_characters = var.require_uppercase_characters
+  require_symbols              = var.require_symbols
+  max_password_age             = var.max_password_age
+  password_reuse_prevention    = var.password_reuse_prevention
+}
+
+module "logging" {
+  source = "../modules/centralized-logging"
+
+  BucketName = "test-antonio-cuenco-test"
+  account_id = data.aws_caller_identity.current.account_id
+  region     = data.aws_region.current.name
+}
+
+
+
 module "database" {
   source     = "../modules/database"
   depends_on = [module.productionvpc]
