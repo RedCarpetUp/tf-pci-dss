@@ -69,7 +69,7 @@ resource "aws_s3_bucket_public_access_block" "s3bucketblock" {
 # Cloudtrail
 ###############################################################################
 resource "aws_cloudtrail" "cloudtrail" {
-  name                          = "tf-cloudtrail"
+  name                          = var.CloudTrailName
   s3_bucket_name                = aws_s3_bucket.s3cloudtrailbuckets.id
   s3_key_prefix                 = "prefix"
   include_global_service_events = true
