@@ -118,6 +118,7 @@ resource "aws_security_group_rule" "rds_sg_ingress_tcp_5432_web_ec2" {
 resource "random_string" "random" {
   length  = 6
   special = false
+  upper   = false
 }
 
 resource "aws_s3_bucket" "log_bucket" {
